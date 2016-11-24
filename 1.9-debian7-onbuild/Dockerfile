@@ -1,4 +1,4 @@
-# Dockerfile for building Ansible image for Debian 9 (stretch), with as few additional software as possible.
+# Dockerfile for building Ansible 1.9 image for Debian 7 (wheezy), with as few additional software as possible.
 #
 # @see https://launchpad.net/~ansible/+archive/ubuntu/ansible
 #
@@ -7,7 +7,7 @@
 
 
 # pull base image
-FROM debian:stretch
+FROM debian:wheezy
 
 MAINTAINER William Yeh <william.pjyeh@gmail.com>
 
@@ -18,18 +18,11 @@ RUN echo "===> Installing python, sudo, and supporting tools..."  && \
     apt-get install -y                     \
         python python-yaml sudo rsync      \
         curl gcc python-pip python-dev libffi-dev libssl-dev  && \
-    apt-get -y --purge remove python-cffi          && \
-    pip install --upgrade cffi pywinrm             && \
-    \
+    pip install --upgrade cffi                     && \
     \
     \
     echo "===> Installing Ansible..."   && \
-    pip install ansible                 && \
-    \
-    \
-    \
-    echo "===> Installing handy tools (not absolutely required)..."  && \
-    apt-get install -y sshpass openssh-client  && \
+    pip install ansible==1.9.4          && \
     \
     \
     echo "===> Removing unused APT resources..."                  && \
@@ -42,6 +35,20 @@ RUN echo "===> Installing python, sudo, and supporting tools..."  && \
     echo "===> Adding hosts for convenience..."        && \
     mkdir -p /etc/ansible                              && \
     echo 'localhost' > /etc/ansible/hosts
+
+
+COPY ansible-playbook-wrapper /usr/local/bin/
+
+ONBUILD  RUN  DEBIAN_FRONTEND=noninteractive  apt-get update   && \
+              echo "===> Updating TLS certificates..."         && \
+              apt-get install -y openssl ca-certificates
+
+ONBUILD  WORKDIR  /tmp
+ONBUILD  COPY  .  /tmp
+ONBUILD  RUN  \
+              echo "===> Diagnosis: host information..."  && \
+              ansible -c local -m setup all
+
 
 
 # default command: display Ansible version

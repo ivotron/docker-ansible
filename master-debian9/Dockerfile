@@ -22,7 +22,7 @@ RUN echo "===> Adding Ansible's prerequisites..."         && \
                 libxml2-dev libxslt1-dev zlib1g-dev    \
                 git sudo curl                       && \
     pip install --upgrade setuptools pip wheel      && \
-    pip install --upgrade cffi pywinrm              && \
+    pip install --upgrade cffi                      && \
     pip install --upgrade pyyaml jinja2 pycrypto    && \
     \
     \

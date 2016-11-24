@@ -20,7 +20,7 @@ RUN echo "===> Adding Ansible's prerequisites..."         && \
                 python python-pip python-dev           \
                 libffi-dev libssl-dev                  \
                 libxml2-dev libxslt1-dev zlib1g-dev    \
-                git sudo curl                       && \
+                git sudo curl rsync                 && \
     apt-get -y --purge remove python-cffi           && \
     \
     \

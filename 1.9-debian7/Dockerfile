@@ -1,4 +1,4 @@
-# Dockerfile for building Ansible image for Debian 9 (stretch), with as few additional software as possible.
+# Dockerfile for building Ansible 1.9 image for Debian 7 (wheezy), with as few additional software as possible.
 #
 # @see https://launchpad.net/~ansible/+archive/ubuntu/ansible
 #
@@ -7,7 +7,7 @@
 
 
 # pull base image
-FROM debian:stretch
+FROM debian:wheezy
 
 MAINTAINER William Yeh <william.pjyeh@gmail.com>
 
@@ -18,14 +18,11 @@ RUN echo "===> Installing python, sudo, and supporting tools..."  && \
     apt-get install -y                     \
         python python-yaml sudo rsync      \
         curl gcc python-pip python-dev libffi-dev libssl-dev  && \
-    apt-get -y --purge remove python-cffi          && \
-    pip install --upgrade cffi pywinrm             && \
-    \
+    pip install --upgrade cffi                     && \
     \
     \
     echo "===> Installing Ansible..."   && \
-    pip install ansible                 && \
-    \
+    pip install ansible==1.9.4          && \
     \
     \
     echo "===> Installing handy tools (not absolutely required)..."  && \
