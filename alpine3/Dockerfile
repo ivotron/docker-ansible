@@ -29,7 +29,7 @@ RUN echo "===> Installing sudo to emulate normal OS behavior..."  && \
     \
     echo "===> Installing handy tools (not absolutely required)..."  && \
     pip install --upgrade pywinrm                  && \
-    apk --update add sshpass openssh-client rsync  && \
+    apk --update add sshpass openssh-client rsync bash  && \
     \
     \
     echo "===> Removing package list..."  && \
